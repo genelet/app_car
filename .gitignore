@@ -1,0 +1,14 @@
+package-lock.json
+package.json
+app.json
+node_modules
+babel.config.js
+metro.config.js
+android
+ios
+.buckconfig
+.eslintrc.js
+.flowconfig
+.gitattributes
+.prettierrc.js
+.watchmanconfig
