@@ -8,7 +8,7 @@ class Goback extends React.Component {
   render() {
     var navigation = this.props.navigation;
     return (
-      <Icon
+      <Icon 
         name='done'
         color='#fff'
         onPress={() => navigation.goBack()}
@@ -22,7 +22,7 @@ class Search extends React.Component {
     var navigation = this.props.navigation;
     return (
       <Icon
-        name='search'
+        name='home'
         color='#fff'
         onPress={() => navigation.navigate('Home')}
       />
@@ -39,13 +39,13 @@ class p_car_edit extends React.Component {
 
     const DeviceWidth = Dimensions.get('window').width
 
-console.log(2222222222);
+//console.log(2222222222);
     return (
 <>
       <Header
         backgroundImage={require('../../assets/title.png')}
-        centerComponent=<Goback navigation={navigation} />
-        placement="left"
+        leftComponent=<Goback navigation={navigation} />
+        centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
         rightComponent=<Search navigation={navigation} />
       />
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -96,7 +96,7 @@ console.log(2222222222);
         <Text style={{ width: 0.9*DeviceWidth, marginBottom: 10}}>{item.COMMENT_FTXT}</Text>
 </View>
 
-        <Button title="Close" onPress={() => navigation.goBack()} />
+        <Button icon={{name: 'done', color: 'white'}} title="Close " onPress={() => navigation.goBack()} />
       </ScrollView>
 </>
     );

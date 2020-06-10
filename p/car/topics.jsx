@@ -4,12 +4,26 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { ListItem, Button, Icon, Header, colors, ThemeProvider } from 'react-native-elements';
 
+class History extends React.Component {
+  render() {
+    var navigation = this.props.navigation;
+    var genelet = this.props.genelet;
+    return (
+      <Icon
+        name='menu'
+        color='#fff'
+        onPress={() => genelet.go(navigation, "p", "car", "history")}
+      />
+    )
+  }
+}
+
 class Search extends React.Component {
   render() {
     var navigation = this.props.navigation;
     return (
       <Icon
-        name='search'
+        name='home'
         color='#fff'
         onPress={() => navigation.navigate('Home')}
       />
@@ -36,7 +50,7 @@ class p_car_topics extends React.Component {
 	var genelet = route.params;
 	this.setState(
       { refreshing: true },
-      () => {genelet.send(navigation, "p", "car", "topics", {rowcount:10, sortreverse:1, pageno:1}, true);}
+      () => {genelet.send(navigation, "p", "car", "topics", {rowcount:20, sortreverse:1, pageno:1}, true);}
     );
   };
 */
@@ -59,13 +73,13 @@ class p_car_topics extends React.Component {
     }
 
 	if (incoming.pageno < maxpageno) {
-console.log(33333, "loading more...");
+//console.log(33333, "loading more...");
 		var into = incoming.pageno;
 		var pageno = (typeof(into) == "string") ? parseInt(into) : into;
 		pageno += 1;
 		names.incoming.pageno = pageno;
 
-        var q = {sortreverse:1, rowcount:10, pageno:pageno, totalno:totalno};
+        var q = {sortreverse:1, rowcount:20, pageno:pageno, totalno:totalno};
 		if (incoming.CATEGORY_ETXT) q.CATEGORY_ETXT = incoming.CATEGORY_ETXT;
 		if (incoming.MAKE_NAME_NM) q.MAKE_NAME_NM = incoming.MAKE_NAME_NM;
 		if (incoming.YEAR>0) q.YEAR = incoming.YEAR;
@@ -75,7 +89,7 @@ console.log(33333, "loading more...");
 			() => {genelet.go(navigation, "p", "car", "topics", q, {operator:"append"});}
       );
     } else {
-console.log("quitttttt");
+//console.log("quitttttt");
     }
   };
 
@@ -89,7 +103,7 @@ console.log("quitttttt");
     return (
       <ListItem
         title={item.MAKE_NAME_NM + " " + item.YEAR}
-        subtitle={item.MODEL_NAME_NM}
+        subtitle={item.MODEL_NAME_NM + (item.updated ? ", on " + item.updated : "")}
         subtitleProps={{ style: {fontStyle: "italic", fontSize: 12, fontWeight: "bold", textTransform: "capitalize"} }}
         leftAvatar={{ source: { uri: item.src } }}
         topDivider
@@ -103,11 +117,8 @@ console.log("quitttttt");
   // Render Footer
   renderFooter = () => {
     try {
-      // Check If Loading
       if (this.state.loading) {
-        return (
-          <ActivityIndicator />
-        )
+        return (<ActivityIndicator />)
       }
       else {
         return null;
@@ -123,18 +134,15 @@ console.log("quitttttt");
     var route = this.props.route;
 	var genelet = route.params;
 	var lists = genelet.lists;
-console.log(1111111);
+// console.log(1111111);
 // console.log(lists);
-//        containerStyle={{ paddingTop: 0 }}
-//        statusBarProps={{ barStyle: 'light-content', translucent: true, backgroundColor: 'transparent' }}
 
     if (lists===undefined || lists.length<1) {
       return (<>
       <Header
         backgroundImage={require('../../assets/title.png')}
-        leftComponent={{ icon: 'menu', color: '#fff' }}
+        leftComponent=<History navigation={navigation} genelet={genelet} />
         centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
-        placement="left"
         rightComponent=<Search navigation={navigation} />
       />
       <Text></Text>
@@ -145,20 +153,17 @@ console.log(1111111);
     return (<>
       <Header
         backgroundImage={require('../../assets/title.png')}
-        leftComponent={{ icon: 'menu', color: '#fff' }}
+        leftComponent=<History navigation={navigation} genelet={genelet} />
         centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
-        placement="left"
         rightComponent=<Search navigation={navigation} />
       />
       <FlatList
-
-ListFooterComponent={this.renderFooter}
-
         keyExtractor={this.keyExtractor}
-        data={genelet.lists}
+        data={lists}
         renderItem={this.renderItem}
         onEndReached={this.handleLoadMore}
         onEndReachedThreshold={0.05}
+		ListFooterComponent={this.renderFooter}
       />
     </>);
     }

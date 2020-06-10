@@ -10,6 +10,7 @@ import { ButtonGroup, Button, Text, Image } from 'react-native-elements';
 
 import Genelet from './genelet.jsx';
 import p_car_topics from './p/car/topics.jsx';
+import p_car_history from './p/car/history.jsx';
 import p_car_edit from './p/car/edit.jsx';
 
 class HomeScreen extends React.Component {
@@ -25,17 +26,17 @@ class HomeScreen extends React.Component {
   }
 
   updateIndex = (currentIndex) => {
-    console.log(10000, currentIndex);
+    // console.log(10000, currentIndex);
     this.setState({selectedIndex: currentIndex});
   }
 
   setSelectedYear = (currentYear) => {
-    console.log(20000, currentYear);
+    // console.log(20000, currentYear);
     this.setState({selectedYear:currentYear});
   }
 
   setSelectedMake = (currentValue) => {
-    console.log(30000, currentValue);
+    // console.log(30000, currentValue);
     this.setState({selectedMake:currentValue});
   }
 
@@ -65,15 +66,15 @@ class HomeScreen extends React.Component {
     const DeviceWidth = Dimensions.get('window').width;
 
     var navigation = this.props.navigation;
-    var route = this.props.route;
+    // var route = this.props.route;
     var genelet = new Genelet({handler:"https://www.tabilet.com/jenny/app.php"});
-console.log("00000");
+//console.log("00000");
     if (years.length === 0) {
-console.log("aaaaa");
+//console.log("aaaaa");
       genelet.go(navigation, "p", "car", "years", {}, this.fyear);
     }
     if (makes.length === 0) {
-console.log("bbbbb");
+//console.log("bbbbb");
       genelet.go(navigation, "p", "car", "makes", {}, this.fmake);
     }
 
@@ -152,6 +153,7 @@ function App() {
       <Stack.Navigator initialRouteName="Home" headerMode="none">
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Vehicle Recalls' }} />
         <Stack.Screen name="p-car-topics" component={p_car_topics} />
+        <Stack.Screen name="p-car-history" component={p_car_history} />
         <Stack.Screen name="p-car-edit" component={p_car_edit} />
       </Stack.Navigator>
     </NavigationContainer>
