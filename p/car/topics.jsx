@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ImageBackground, ActivityIndicator } from 'react-native';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
-import { ListItem, Button, Icon, Header, colors, ThemeProvider } from 'react-native-elements';
+import { ListItem, Text, Button, Icon, Header, colors, ThemeProvider } from 'react-native-elements';
 
 import Genelet from '../../genelet.jsx';
 
@@ -118,18 +118,33 @@ class CustomDrawerContent extends React.Component {
 //console.log(666,navigation);
 //console.log(777,genelet);
     return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem label="Update history"
-        onPress={() => {navigation.dispatch(DrawerActions.closeDrawer());
-          genelet.go(navigation, "p", "car", "history")}
-        }
-      />
-      <DrawerItem
-        label="Close"
-        onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
-      />
+<>
+<Button title="MENU" />
+    <DrawerContentScrollView {...props} style={{"backgroundColor":"#f0f0f0"}} >
+        <DrawerItem label="Back to Results"
+          icon={()=><Icon color="goldenrod" size={30} name='list' />}
+          onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+        />
+        <DrawerItem label="Update History"
+          icon={()=><Icon color="deepskyblue" size={30} name='update' />}
+          onPress={() => {
+            navigation.dispatch(DrawerActions.closeDrawer());
+            genelet.go(navigation, "p", "car", "history");
+          }}
+        />
+        <DrawerItem label="Contact Developer"
+          icon={()=><Icon color="deepskyblue" size={30} name='business' />}
+		  onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+        />
+        <DrawerItem label="App Version"
+          icon={()=><Icon color="deepskyblue" size={30} name='extension' />}
+        />
+        <DrawerItem label="Open Data Canada"
+          icon={()=><Icon color="#FF0000" size={30} name='launch' />}
+          onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+        />
     </DrawerContentScrollView>
+</>
     );
   };
 }
@@ -145,7 +160,7 @@ class p_car_topics extends React.Component {
 	var genelet = route.params;
     return (<>
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} genelet={genelet} />}>
-      <Drawer.Screen name="Canada's Vehicle Recalls" component={pcartopics} initialParams={genelet} />
+      <Drawer.Screen name="Canada Vehicle Recalls" component={pcartopics} initialParams={genelet} />
     </Drawer.Navigator>
     </>); 
   }

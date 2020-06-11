@@ -109,12 +109,12 @@ class Genelet {
 					return;
 				} else {
 					// console.log("77 status: ", status);
-					alert("Error status: ", status);
+					alert("Error status: " + status);
 				}
 			}).catch(
 				(err) => {
 					// console.log("88 ", err);
-					alert("Error found: ", err);
+					alert(err);
 				});
 		// console.log("return from ajax.");
 	};
