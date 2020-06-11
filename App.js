@@ -78,7 +78,7 @@ class HomeScreen extends React.Component {
       genelet.go(navigation, "p", "car", "makes", {}, this.fmake);
     }
 
-	var q = {sortreverse:1, rowcount:10, pageno:1};
+	var q = {sortreverse:1, rowcount:40, pageno:1};
     q.CATEGORY_ETXT = (selectedIndex==0) ? "Car" : "SUV";
 	if (selectedYear != "") q.YEAR = selectedYear;
 	if (selectedMake != "") q.MAKE_NAME_NM = selectedMake;

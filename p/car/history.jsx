@@ -55,7 +55,7 @@ class p_car_history extends React.Component {
       <Header
         backgroundImage={require('../../assets/title.png')}
         leftComponent=<Goback navigation={navigation} />
-        centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
+        centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
         rightComponent=<Search navigation={navigation} />
       />
       <Text></Text>
@@ -68,7 +68,7 @@ class p_car_history extends React.Component {
       <Header
         backgroundImage={require('../../assets/title.png')}
         leftComponent=<Goback navigation={navigation} />
-        centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
+        centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
         rightComponent=<Search navigation={navigation} />
       />
       <Text h2>Updating History</Text>

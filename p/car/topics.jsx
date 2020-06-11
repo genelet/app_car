@@ -1,22 +1,11 @@
 import React from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
 import { ListItem, Button, Icon, Header, colors, ThemeProvider } from 'react-native-elements';
 
-class History extends React.Component {
-  render() {
-    var navigation = this.props.navigation;
-    var genelet = this.props.genelet;
-    return (
-      <Icon
-        name='menu'
-        color='#fff'
-        onPress={() => genelet.go(navigation, "p", "car", "history")}
-      />
-    )
-  }
-}
+import Genelet from '../../genelet.jsx';
 
 class Search extends React.Component {
   render() {
@@ -31,34 +20,19 @@ class Search extends React.Component {
   }
 }
 
-class p_car_topics extends React.Component {
+class pcartopics extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false,
-      refreshing: false,
-      error: null
-    };
+    this.state = { loading:false, refreshing:false, error:null };
   }
-
   keyExtractor = (item, index) => index.toString()
 
-/*
-  handleRefresh = () => {
-    var navigation = this.props.navigation;
-    var route = this.props.route;
-	var genelet = route.params;
-	this.setState(
-      { refreshing: true },
-      () => {genelet.send(navigation, "p", "car", "topics", {rowcount:20, sortreverse:1, pageno:1}, true);}
-    );
-  };
-*/
-
   handleLoadMore = () => {
+/*
     var navigation = this.props.navigation;
     var route = this.props.route;
-	var genelet = route.params;
+	var obj = route.params; // because it comes from initialParams
+    var genelet = (obj.constructor.name==='Genelet') ? obj : new Genelet(obj);
 	var names = genelet.names;
 
     var incoming = names.incoming;
@@ -73,13 +47,12 @@ class p_car_topics extends React.Component {
     }
 
 	if (incoming.pageno < maxpageno) {
-//console.log(33333, "loading more...");
 		var into = incoming.pageno;
 		var pageno = (typeof(into) == "string") ? parseInt(into) : into;
 		pageno += 1;
 		names.incoming.pageno = pageno;
 
-        var q = {sortreverse:1, rowcount:20, pageno:pageno, totalno:totalno};
+        var q = {sortreverse:1, rowcount:40, pageno:pageno, totalno:totalno};
 		if (incoming.CATEGORY_ETXT) q.CATEGORY_ETXT = incoming.CATEGORY_ETXT;
 		if (incoming.MAKE_NAME_NM) q.MAKE_NAME_NM = incoming.MAKE_NAME_NM;
 		if (incoming.YEAR>0) q.YEAR = incoming.YEAR;
@@ -87,18 +60,19 @@ class p_car_topics extends React.Component {
 		this.setState(
 			{ loading : true },
 			() => {genelet.go(navigation, "p", "car", "topics", q, {operator:"append"});}
-      );
-    } else {
-//console.log("quitttttt");
-    }
+		);
+	}
+*/
   };
 
-  // this function is called looply on genelet.lists
+  // this function is looped on genelet.lists
   // original: renderItem = ({ item }) => (<ListItem ... />)
   renderItem = ({ item }) => {
     var navigation = this.props.navigation;
     var route = this.props.route;
-	var genelet = route.params;
+	var obj = route.params; // because it comes from initialParams
+    var genelet = (obj.constructor.name==='Genelet') ? obj : new Genelet(obj);
+// console.log(555,genelet.constructor.name);
 
     return (
       <ListItem
@@ -116,33 +90,22 @@ class p_car_topics extends React.Component {
 
   // Render Footer
   renderFooter = () => {
-    try {
-      if (this.state.loading) {
-        return (<ActivityIndicator />)
-      }
-      else {
-        return null;
-      }
-    }
-    catch (error) {
-      console.log(error);
-    }
+    if (this.state.loading) return (<ActivityIndicator />)
+    return null;
   };
 
   render() {
     var navigation = this.props.navigation;
     var route = this.props.route;
-	var genelet = route.params;
-	var lists = genelet.lists;
-// console.log(1111111);
-// console.log(lists);
+	var obj = route.params; // use initialParams to pass params
+	var lists = obj.lists;
+// console.log(444, lists);
 
     if (lists===undefined || lists.length<1) {
       return (<>
       <Header
         backgroundImage={require('../../assets/title.png')}
-        leftComponent=<History navigation={navigation} genelet={genelet} />
-        centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
+        centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
         rightComponent=<Search navigation={navigation} />
       />
       <Text></Text>
@@ -150,11 +113,11 @@ class p_car_topics extends React.Component {
       <Text>        No Record.</Text>
       </>);
     } else {
-    return (<>
+      return (<>
       <Header
         backgroundImage={require('../../assets/title.png')}
-        leftComponent=<History navigation={navigation} genelet={genelet} />
-        centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
+        leftComponent={<Icon name='menu' color='#fff' onPress={() => navigation.dispatch(DrawerActions.openDrawer()) } />}
+        centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
         rightComponent=<Search navigation={navigation} />
       />
       <FlatList
@@ -163,11 +126,51 @@ class p_car_topics extends React.Component {
         renderItem={this.renderItem}
         onEndReached={this.handleLoadMore}
         onEndReachedThreshold={0.05}
+		ListHeaderComponent={<Text h5>  Maximum: 40 records</Text>}
 		ListFooterComponent={this.renderFooter}
       />
     </>);
     }
   };
+}
+
+class CustomDrawerContent extends React.Component {
+  render() {
+    var props = this.props;
+    var navigation = props.navigation;
+    var genelet = props.genelet; // use arguments to pass parameters
+//console.log(666,navigation);
+//console.log(777,genelet);
+    return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem label="History of Data Updates"
+        onPress={() => genelet.go(navigation, "p", "car", "history")}
+      />
+      <DrawerItem
+        label="Close"
+        onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+      />
+    </DrawerContentScrollView>
+    );
+  };
+}
+
+const Drawer = createDrawerNavigator();
+
+class p_car_topics extends React.Component {
+  render() {
+    var navigation = this.props.navigation;
+    var route = this.props.route;
+// console.log(1111111, navigation);
+// console.log(2222222, route);
+	var genelet = route.params;
+    return (<>
+    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} genelet={genelet} />}>
+      <Drawer.Screen name="Vehicle" component={pcartopics} initialParams={genelet} />
+    </Drawer.Navigator>
+    </>); 
+  }
 }
 
 export default p_car_topics;

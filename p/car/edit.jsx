@@ -45,7 +45,7 @@ class p_car_edit extends React.Component {
       <Header
         backgroundImage={require('../../assets/title.png')}
         leftComponent=<Goback navigation={navigation} />
-        centerComponent={{ text: 'CAR RECALLS', style: { color: '#fff' } }}
+        centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
         rightComponent=<Search navigation={navigation} />
       />
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
