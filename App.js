@@ -78,7 +78,7 @@ class HomeScreen extends React.Component {
       genelet.go(navigation, "p", "car", "makes", {}, this.fmake);
     }
 
-	var q = {sortreverse:1, rowcount:40, pageno:1};
+	var q = {sortreverse:1, rowcount:100, pageno:1};
     q.CATEGORY_ETXT = (selectedIndex==0) ? "Car" : "SUV";
 	if (selectedYear != "") q.YEAR = selectedYear;
 	if (selectedMake != "") q.MAKE_NAME_NM = selectedMake;
@@ -90,19 +90,21 @@ class HomeScreen extends React.Component {
         <View style={{width: DeviceWidth*0.2, marginBottom:1, marginLeft:1, justifyContent: 'center'}}><Text>  </Text></View>
         <Image source={require('./assets/transport_canada.jpg')} style={{ width: 217, height: 61, justifyContent: 'center'}} />
 	  </View>
-
+      <View style={styles.one2Height}>
+		<Text style={{textAlign: 'center', fontWeight:'bold', color: 'maroon'}}>VEHICLE RECALL REPORT</Text>
+	  </View>
       <View style={styles.twoHeight}>
 
 
       <View style={{flexDirection: 'row'}}>
-        <Text style={{textAlign: 'center', fontWeight:'bold', color: 'maroon'}}> Vehicle Specs:</Text>
+        <Text style={{textAlign: 'center', fontWeight:'bold', color: 'maroon'}}> Specifications:</Text>
       </View>
-      <View style={{marginTop: 10, flexDirection: 'row'}}>
+      <View style={{marginTop: 5, marginBottom: 0, flexDirection: 'row'}}>
         <View style={{width: DeviceWidth*0.2, marginBottom:1, marginLeft:1, justifyContent: 'center'}}><Text style={{textAlign: 'right', textShadowRadius: 5, textShadowColor: '#fff', color: 'maroon', fontWeight:'bold'}}>Type:</Text></View>
         <View style={{width: DeviceWidth*0.4, marginBottom:1, marginLeft:1, justifyContent: 'center'}}><ButtonGroup buttons={['Car', 'SUV']} onPress={this.updateIndex} selectedIndex={selectedIndex} /></View>
       </View>
 
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', marginTop: -3}}>
         <View style={{width: DeviceWidth*0.2, marginBottom:1, marginLeft:1, justifyContent: 'center'}}><Text style={{textAlign: 'right', textShadowRadius: 5, textShadowColor: '#fff', color: 'maroon', fontWeight:'bold'}}>Make:</Text></View>
         <View style={{width: DeviceWidth*0.4, marginBottom:1, marginLeft:1, justifyContent: 'center'}}>
           <Picker style={{height: 50, color: 'maroon'}} itemStyle={{height: 50}}
@@ -115,7 +117,7 @@ class HomeScreen extends React.Component {
         </View>
       </View>
 
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', marginTop: -10}}>
         <View style={{width: DeviceWidth*0.2, marginBottom:1, marginLeft:1, justifyContent: 'center'}}><Text style={{textAlign: 'right', textShadowRadius: 9, textShadowColor: '#fff', color: 'maroon', fontWeight:'bold'}}>Year:</Text></View>
         <View style={{width: DeviceWidth*0.4, marginBottom:1, marginLeft:1, justifyContent: 'center'}}>
           <Picker style={{height: 50, color:"maroon"}} itemStyle={{height: 50}}
@@ -168,12 +170,16 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   twoHeight: {
-    flex: .50,
+    flex: .45,
     width: '70%',
     backgroundColor: 'transparent'
   },
   oneHeight: {
-    flex: .20,
+    flex: .15,
+    backgroundColor: 'transparent'
+  },
+  one2Height: {
+    flex: .10,
     backgroundColor: 'transparent'
   },
   threeHeight: {

@@ -4,49 +4,22 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { Button, Image, Header, Icon, Text } from 'react-native-elements';
 
-class Goback extends React.Component {
-  render() {
-    var navigation = this.props.navigation;
-    return (
-      <Icon 
-        name='done'
-        color='#fff'
-        onPress={() => navigation.goBack()}
-      />
-    )
-  }
-}
-
-class Search extends React.Component {
-  render() {
-    var navigation = this.props.navigation;
-    return (
-      <Icon
-        name='home'
-        color='#fff'
-        onPress={() => navigation.navigate('Home')}
-      />
-    )
-  }
-}
-
 class p_car_edit extends React.Component {
   render() {
     var navigation = this.props.navigation;
     var route = this.props.route;
 	var genelet = route.params;
 	var item = genelet.single;
+//console.log(22222, item);
 
     const DeviceWidth = Dimensions.get('window').width
-
-//console.log(2222222222);
     return (
 <>
       <Header
         backgroundImage={require('../../assets/title.png')}
-        leftComponent=<Goback navigation={navigation} />
+        leftComponent={<Icon name='chevron-left' size={30} color='#fff' onPress={() => navigation.goBack()} />}
         centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
-        rightComponent=<Search navigation={navigation} />
+        rightComponent={<Icon name='home' color='#fff' onPress={() => navigation.navigate('Home')} />}
       />
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
 
@@ -61,8 +34,8 @@ class p_car_edit extends React.Component {
 </View>
 
 <View style={{ flex:1, alignItems: 'center', flexDirection: 'row'}}>
-<Text style={{ flex:0.5, textAlign: 'right' }}>Due Date:</Text>
-<Text style={{ flex:0.5, color: 'maroon', fontWeight:'bold'}}> {item.RECALL_DATE_DTE}</Text>
+<Text style={{ flex:0.5, textAlign: 'right' }}>Date Announced:</Text>
+<Text style={{ flex:0.5, color: 'maroon', fontWeight:'bold'}}> {item.ON}</Text>
 </View>
 
 <View style={{ flex:1, alignItems: 'center', flexDirection: 'row'}}>
@@ -81,7 +54,7 @@ class p_car_edit extends React.Component {
 <View style={{ width: 0.9*DeviceWidth, alignItems: 'center'}}>
         <Text style={{ width: 0.9*DeviceWidth}}>Vehicle Type: {item.CATEGORY_ETXT}</Text>
         <Text style={{ width: 0.9*DeviceWidth}}>Notification Type: {item.NOTIFICATION_TYPE_ETXT}</Text>
-        <Text style={{ width: 0.9*DeviceWidth}}>System Type: {item.SYSTEM_TYPE_ETXT}</Text>
+        <Text style={{ width: 0.9*DeviceWidth}}>Item Affected: {item.SYSTEM_TYPE_ETXT}</Text>
         <Text></Text>
         <Text style={{ width: 0.9*DeviceWidth}}>{item.COMMENT_ETXT}</Text>
         <Text></Text>
@@ -91,7 +64,7 @@ class p_car_edit extends React.Component {
 <View>
         <Text style={{ width: 0.9*DeviceWidth}}>Vehicle Type: {item.CATEGORY_FTXT}</Text>
         <Text style={{ width: 0.9*DeviceWidth}}>Notification Type: {item.NOTIFICATION_TYPE_FTXT}</Text>
-        <Text style={{ width: 0.9*DeviceWidth}}>System Type: {item.SYSTEM_TYPE_FTXT}</Text>
+        <Text style={{ width: 0.9*DeviceWidth}}>Item Affected: {item.SYSTEM_TYPE_FTXT}</Text>
         <Text></Text>
         <Text style={{ width: 0.9*DeviceWidth, marginBottom: 10}}>{item.COMMENT_FTXT}</Text>
 </View>
