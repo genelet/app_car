@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, ImageBackground, ActivityIndicator } from 'react-native';
+import { View, Linking, FlatList, ImageBackground, ActivityIndicator } from 'react-native';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
@@ -7,12 +7,40 @@ import { ListItem, Text, Button, Icon, Header, colors, ThemeProvider } from 'rea
 
 import Genelet from '../../genelet.jsx';
 
+class MyListItem extends React.PureComponent { // PureComponent VERY IMPORTANT!
+  render() {
+    var navigation = this.props.navigation;
+    var route = this.props.route;
+    var obj = route.params;
+    var genelet = (obj.constructor.name==='Genelet') ? obj : new Genelet(obj);
+
+    var item = this.props.item;
+console.log(444, item.tabilet_id);
+
+    return (
+      <ListItem
+		key={item.tabilet_id}
+        title={item.MAKE_NAME_NM + " " + item.YEAR}
+        rightTitle={item.RECALL_DATE_DTE}
+        rightTitleStyle={{ fontSize: 12 }}
+        subtitle={item.MODEL_NAME_NM}
+        subtitleProps={{ style: {fontStyle: "italic", fontSize: 12, fontWeight: "bold", textTransform: "capitalize"} }}
+        leftAvatar={{ source: { uri: item.src } }}
+        topDivider
+        bottomDivider
+        chevron
+        onPress={() => genelet.go(navigation, "p", "car", "edit", {tabilet_id:item.tabilet_id})}
+      />
+    )
+  };
+}
+
 class pcartopics extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loading:false, refreshing:false, error:null };
   }
-  keyExtractor = (item, index) => index.toString();
+  keyExtractor = (item, index) => item.tabilet_id;
 
   handleLoadMore = () => {
     var navigation = this.props.navigation;
@@ -55,24 +83,10 @@ class pcartopics extends React.Component {
   renderItem = ({ item }) => {
     var navigation = this.props.navigation;
     var route = this.props.route;
-	var obj = route.params; // because it comes from initialParams
-    var genelet = (obj.constructor.name==='Genelet') ? obj : new Genelet(obj);
-
-    return (
-      <ListItem
-        title={item.MAKE_NAME_NM + " " + item.YEAR}
-        rightTitle={item.RECALL_DATE_DTE}
-        rightTitleStyle={{ fontSize: 12 }}
-        subtitle={item.MODEL_NAME_NM}
-        subtitleProps={{ style: {fontStyle: "italic", fontSize: 12, fontWeight: "bold", textTransform: "capitalize"} }}
-        leftAvatar={{ source: { uri: item.src } }}
-        topDivider
-        bottomDivider
-        chevron
-        onPress={() => genelet.go(navigation, "p", "car", "edit", {tabilet_id:item.tabilet_id})}
-      />
-    )
-  };
+	var genelet = route.params; // because it comes from initialParams
+console.log(333);
+    return (<MyListItem {...this.props} item={item} />);
+  }
 
   // Render Footer
   renderFooter = () => {
@@ -85,7 +99,7 @@ class pcartopics extends React.Component {
     var route = this.props.route;
 	var genelet = route.params; // use initialParams to pass params
 	var lists = genelet.lists;
-// console.log(444, lists);
+//console.log(555, lists);
 
     return (<>
       <Header
@@ -110,6 +124,50 @@ class pcartopics extends React.Component {
   };
 }
 
+class Developer extends React.Component {
+  render() {
+    var props = this.props;
+    var navigation = props.navigation;
+//console.log(888);
+    return (<>
+      <Header
+        backgroundImage={require('../../assets/title.png')}
+        leftComponent={<Icon name='chevron-left' size={30} color='#fff' onPress={() => {navigation.goBack(); navigation.dispatch(DrawerActions.openDrawer());}} />}
+        centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
+      />
+      <View style={{"marginTop":100, "marginBottom":10}}>
+        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Developer</Text>
+      </View>
+      <View style={{"flex":0.2}} />
+      <View style={{"alignItems": "center"}}>
+      <Button style={{"width":'50%'}} title="Greetingland, LLC" icon={<Icon name="mail" size={20} color="white" />} onPress={() => Linking.openURL('mailto:info@tabilet.com')} />
+      </View>
+    </>);
+  };
+}
+
+class Version extends React.Component {
+  render() {
+    var props = this.props;
+    var navigation = props.navigation;
+//console.log(999);
+    return (<>
+      <Header
+        backgroundImage={require('../../assets/title.png')}
+        leftComponent={<Icon name='chevron-left' size={30} color='#fff' onPress={() => {navigation.goBack(); navigation.dispatch(DrawerActions.openDrawer());}} />}
+        centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
+      />
+      <View style={{"marginTop":100, "marginBottom":10}}>
+        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Version</Text>
+      </View>
+      <View style={{"flex":0.2}} />
+      <View style={{"alignItems": "center"}}>
+        <Text h5>1.0.1</Text>
+      </View>
+    </>);
+  };
+}
+
 class CustomDrawerContent extends React.Component {
   render() {
     var props = this.props;
@@ -117,35 +175,38 @@ class CustomDrawerContent extends React.Component {
     var genelet = props.genelet; // use arguments to pass parameters
 //console.log(666,navigation);
 //console.log(777,genelet);
-    return (
-<>
-<Button title="MENU" />
-    <DrawerContentScrollView {...props} style={{"backgroundColor":"#f0f0f0"}} >
+    return (<>
+      <Button title="MENU" onPress={() => navigation.dispatch(DrawerActions.closeDrawer())} />
+      <DrawerContentScrollView {...props} style={{"backgroundColor":"#f0f0f0"}}>
         <DrawerItem label="Back to Results"
           icon={()=><Icon color="goldenrod" size={30} name='list' />}
           onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
         />
+        <DrawerItem label="Search"
+          icon={()=><Icon color="gray" size={30} name='search' />}
+		  onPress={() => navigation.navigate("Home")}
+        />
         <DrawerItem label="Update History"
           icon={()=><Icon color="deepskyblue" size={30} name='update' />}
-          onPress={() => {
-            navigation.dispatch(DrawerActions.closeDrawer());
-            genelet.go(navigation, "p", "car", "history");
-          }}
+          onPress={() => genelet.go(navigation, "p", "car", "history")}
         />
         <DrawerItem label="Contact Developer"
           icon={()=><Icon color="deepskyblue" size={30} name='business' />}
-		  onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+		  onPress={() => navigation.navigate("Developer")}
         />
         <DrawerItem label="App Version"
           icon={()=><Icon color="deepskyblue" size={30} name='extension' />}
+		  onPress={() => navigation.navigate("Version")}
         />
         <DrawerItem label="Open Data Canada"
           icon={()=><Icon color="#FF0000" size={30} name='launch' />}
-          onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+          onPress={() => {
+            navigation.dispatch(DrawerActions.closeDrawer());
+            Linking.openURL('https://open.canada.ca/en/open-data');
+          }}
         />
-    </DrawerContentScrollView>
-</>
-    );
+      </DrawerContentScrollView>
+    </>);
   };
 }
 
@@ -155,12 +216,14 @@ class p_car_topics extends React.Component {
   render() {
     var navigation = this.props.navigation;
     var route = this.props.route;
-// console.log(111, navigation);
-// console.log(222, route);
+//console.log(111, navigation);
+//console.log(222, route);
 	var genelet = route.params;
     return (<>
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} genelet={genelet} />}>
       <Drawer.Screen name="Canada Vehicle Recalls" component={pcartopics} initialParams={genelet} />
+      <Drawer.Screen name="Developer" component={Developer} />
+      <Drawer.Screen name="Version" component={Version} />
     </Drawer.Navigator>
     </>); 
   }

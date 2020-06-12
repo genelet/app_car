@@ -5,13 +5,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ListItem, Text, Button, Icon, Header, colors, ThemeProvider } from 'react-native-elements';
 
 class p_car_history extends React.Component {
-  keyExtractor = (item, index) => index.toString();
+  keyExtractor = (item, index) => item.log_id;
 
   historyItem = ({ item }) => {
     return (
       <ListItem
-        title={item.theday + " " + item.status}
-        subtitle={item.num + " records updated."}
+        key={item.log_id}
+        title={item.theday + " # of updates: " + item.num}
+        subtitle={item.status}
         subtitleProps={{ style: {fontStyle: "italic", fontSize: 12, fontWeight: "bold", textTransform: "capitalize"} }}
         topDivider
         bottomDivider
@@ -29,9 +30,10 @@ class p_car_history extends React.Component {
         backgroundImage={require('../../assets/title.png')}
         leftComponent={<Icon name='chevron-left' size={30} color='#fff' onPress={() => navigation.goBack()} />}
         centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
-        rightComponent={<Icon name='home' color='#fff' onPress={() => navigation.navigate('Home')} />}
       />
-      <Text h2>Updating History</Text>
+      <View style={{"marginTop":10, "marginBottom":10}}>
+        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Updating History</Text>
+      </View>
       {(lists===undefined || lists.length<1) ? <Text> No Record.</Text> :
 		<FlatList
 		  keyExtractor={this.keyExtractor}
