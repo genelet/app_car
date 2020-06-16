@@ -60,13 +60,13 @@ class pcartopics extends React.Component {
       names.incoming.maxpageno = maxpageno;
     }
 
-	if (incoming.pageno < maxpageno) {
+	if (incoming.pageno < maxpageno && incoming.pageno <= 10 && genelet.lists.length < 100) {
 		var into = incoming.pageno;
 		var pageno = (typeof(into) == "string") ? parseInt(into) : into;
 		pageno += 1;
 		names.incoming.pageno = pageno;
 
-        var q = {sortreverse:1, rowcount:40, pageno:pageno, totalno:totalno};
+        var q = {sortreverse:1, rowcount:10, pageno:pageno, totalno:totalno};
 		if (incoming.CATEGORY_ETXT) q.CATEGORY_ETXT = incoming.CATEGORY_ETXT;
 		if (incoming.MAKE_NAME_NM) q.MAKE_NAME_NM = incoming.MAKE_NAME_NM;
 		if (incoming.YEAR>0) q.YEAR = incoming.YEAR;
@@ -75,7 +75,9 @@ class pcartopics extends React.Component {
 			{ loading : true },
 			() => {genelet.go(navigation, "p", "car", "topics", q, {operator:"append"});}
 		);
-	}
+	} else {
+		this.setState( { loading : false } );
+    }
   };
 
   // this function is looped on genelet.lists
@@ -88,18 +90,16 @@ console.log(333);
     return (<MyListItem {...this.props} item={item} />);
   }
 
-  // Render Footer
-  renderFooter = () => {
-    if (this.state.loading) return (<ActivityIndicator />)
-    return null;
-  };
-
   render() {
     var navigation = this.props.navigation;
     var route = this.props.route;
 	var genelet = route.params; // use initialParams to pass params
 	var lists = genelet.lists;
 //console.log(555, lists);
+
+    var names = genelet.names;
+    var incoming = names.incoming;
+    var totalno = incoming.totalno;
 
     return (<>
       <Header
@@ -113,11 +113,10 @@ console.log(333);
 		  keyExtractor={this.keyExtractor}
 		  data={lists}
 		  renderItem={this.renderItem}
-  //      onEndReached={this.handleLoadMore}
-  //      onEndReachedThreshold={0.05}
+          onEndReached={this.handleLoadMore}
+          onEndReachedThreshold={0.05}
   //		ListHeaderComponent={<Text h5>  Maximum: 100 records</Text>}
-  //		ListFooterComponent={this.renderFooter}
-		  ListFooterComponent={<Text h5>  Maximum: 100 records</Text>}
+  		  ListFooterComponent={this.state.loading ? <ActivityIndicator /> : (totalno>100) ? <Text h5>{lists.length} of total {totalno}. Only 100 records are displayed.</Text> : <Text h5>{lists.length} of total {totalno}.</Text>}
 	    />
       }
     </>);
@@ -158,11 +157,18 @@ class Version extends React.Component {
         centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
       />
       <View style={{"marginTop":100, "marginBottom":10}}>
-        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Version</Text>
+        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Version & License</Text>
       </View>
-      <View style={{"flex":0.2}} />
+      <View style={{"flex":0.05}} />
       <View style={{"alignItems": "center"}}>
         <Text h5>1.0.1</Text>
+      </View>
+      <View style={{"marginTop":100, "marginBottom":10}}>
+        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Data License</Text>
+      </View>
+      <View style={{"flex":0.05}} />
+      <View style={{"alignItems": "center"}}>
+        https://open.canada.ca/en/open-government-licence-canada
       </View>
     </>);
   };

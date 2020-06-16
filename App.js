@@ -25,41 +25,16 @@ class HomeScreen extends React.Component {
     };
   }
 
-  updateIndex = (currentIndex) => {
-    // console.log(10000, currentIndex);
-    this.setState({selectedIndex: currentIndex});
-  }
-
-  setSelectedYear = (currentYear) => {
-    // console.log(20000, currentYear);
-    this.setState({selectedYear:currentYear});
-  }
-
-  setSelectedMake = (currentValue) => {
-    // console.log(30000, currentValue);
-    this.setState({selectedMake:currentValue});
-  }
-
-  fyear = (f, data) => {
-    this.setState({
-      years: data.data.map( (s,i)=>{
-        return <Picker.Item key={i} value={s.year} label={s.year} />
-      })
-    });
-  }
+  updateIndex     = (cIndex)  => this.setState({selectedIndex: cIndex});
+  setSelectedYear = (cYear)   => this.setState({selectedYear: cYear});
+  setSelectedMake = (cValue)  => this.setState({selectedMake: cValue});
+  fyear           = (f, data) => this.setState({years: data.data.map( (s,i) => <Picker.Item key={i} value={s.year} label={s.year} />) });
+  fmake           = (f, data) => this.setState({makes: data.data.map( (s,i) => <Picker.Item key={i} value={s.MAKE_NAME_NM} label={this.capitalize(s.MAKE_NAME_NM)} />) });
 
   capitalize = (s) => {
     s = s.toLowerCase();
-    if (typeof s !== 'string') return '';
-    return s.charAt(0).toUpperCase() + s.slice(1);
+    return (typeof s == 'string') ? s.charAt(0).toUpperCase()+s.slice(1) : '';
   };
-  fmake = (f, data) => {
-    this.setState({
-      makes: data.data.map( (s,i)=>{
-        return <Picker.Item key={i} value={s.MAKE_NAME_NM} label={this.capitalize(s.MAKE_NAME_NM)} />
-      })
-    });
-  }
 
   render() {
     const {years, makes, selectedIndex, selectedYear, selectedMake} = this.state;
@@ -68,17 +43,10 @@ class HomeScreen extends React.Component {
     var navigation = this.props.navigation;
     // var route = this.props.route;
     var genelet = new Genelet({handler:"https://www.tabilet.com/jenny/app.php"});
-//console.log("00000");
-    if (years.length === 0) {
-//console.log("aaaaa");
-      genelet.go(navigation, "p", "car", "years", {}, this.fyear);
-    }
-    if (makes.length === 0) {
-//console.log("bbbbb");
-      genelet.go(navigation, "p", "car", "makes", {}, this.fmake);
-    }
+    if (years.length == 0) genelet.go(navigation, "p", "car", "years", {}, this.fyear);
+    if (makes.length == 0) genelet.go(navigation, "p", "car", "makes", {}, this.fmake);
 
-	var q = {sortreverse:1, rowcount:100, pageno:1};
+	var q = {sortreverse:1, rowcount:10, pageno:1};
     q.CATEGORY_ETXT = (selectedIndex==0) ? "Car" : "SUV";
 	if (selectedYear != "") q.YEAR = selectedYear;
 	if (selectedMake != "") q.MAKE_NAME_NM = selectedMake;
