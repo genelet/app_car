@@ -3,9 +3,9 @@ package.json
 app.json
 node_modules
 babel.config.js
-metro.config.js
 android
 ios
+__tests__
 .buckconfig
 .eslintrc.js
 .flowconfig
