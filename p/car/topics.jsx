@@ -15,7 +15,7 @@ class MyListItem extends React.PureComponent { // PureComponent VERY IMPORTANT!
     var genelet = (obj.constructor.name==='Genelet') ? obj : new Genelet(obj);
 
     var item = this.props.item;
-console.log(444, item.tabilet_id);
+//console.log(444, item.tabilet_id);
 
     return (
       <ListItem
@@ -86,7 +86,7 @@ class pcartopics extends React.Component {
     var navigation = this.props.navigation;
     var route = this.props.route;
 	var genelet = route.params; // because it comes from initialParams
-console.log(333);
+//console.log(333);
     return (<MyListItem {...this.props} item={item} />);
   }
 
@@ -157,7 +157,7 @@ class Version extends React.Component {
         centerComponent={{ text: 'VEHICLE RECALLS', style: { color: '#fff' } }}
       />
       <View style={{"marginTop":100, "marginBottom":10}}>
-        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Version & License</Text>
+        <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Version</Text>
       </View>
       <View style={{"flex":0.05}} />
       <View style={{"alignItems": "center"}}>
@@ -168,7 +168,9 @@ class Version extends React.Component {
       </View>
       <View style={{"flex":0.05}} />
       <View style={{"alignItems": "center"}}>
+		<Text style={{"textAlign": "center"}} onPress={() => Linking.openURL('https://open.canada.ca/en/open-government-licence-canada')}>
         https://open.canada.ca/en/open-government-licence-canada
+		</Text>
       </View>
     </>);
   };
