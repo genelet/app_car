@@ -20,11 +20,19 @@ npm install react-native-reanimated react-native-gesture-handler react-native-sc
 
 npm install @react-navigation/native @react-navigation/stack @react-navigation/drawer
 
-npm i react-native-elements --save
+npm install react-native-elements react-native-vector-icons @react-native-community/picker --save
 
-this may not needed:
-npm i --save react-native-vector-icons
-
-npm install @react-native-community/picker --save
-
+npx react-native link // needed for icons to show up!
 npx react-native run-android
+
+Release
+
+Follow
+https://reactnative.dev/docs/signed-apk-android
+in particular,  buildType has to be
+release {
+  signingConfig signingConfigs.release
+}
+
+before making the aab file, follow https://reactnative.dev/docs/removing-default-permissions
+to remove few permissions.
