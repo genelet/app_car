@@ -22,6 +22,9 @@ npm install @react-navigation/native @react-navigation/stack @react-navigation/d
 
 npm install react-native-elements react-native-vector-icons @react-native-community/picker --save
 
+npm install --save react-native-device-info
+npm audit fix
+
 npx react-native link // needed for icons to show up!
 npx react-native run-android
 

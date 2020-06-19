@@ -1,3 +1,5 @@
+import { getUniqueId, getDeviceId } from 'react-native-device-info';
+
 class Genelet {
 	constructor(args) {
 		this.handler = args.handler;
@@ -19,7 +21,7 @@ class Genelet {
 		if (method === undefined) method = "GET";
 
 		var url = handler + "/" + role + "/" + this.json + "/" + comp;
-		var req = { method: method, headers: { "Content-Type": "application/json" } };
+		var req = { method: method, headers: { "Content-Type": "application/json", "User-Agent": getUniqueId(), "Referer": getDeviceId() } };
 		if (comp != this.logins && this.token != "") {
 			req.method = "POST";
 			//req.headers["Authorization"] = "Bearer " + this.token;
