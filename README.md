@@ -28,6 +28,11 @@ npm audit fix
 npx react-native link // needed for icons to show up!
 npx react-native run-android
 
+Server:
+change
+LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
+to 
+LogFormat "%h %{X-Unique-ID}i %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
 Release
 
 Follow

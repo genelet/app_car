@@ -42,7 +42,7 @@ class HomeScreen extends React.Component {
 
     var navigation = this.props.navigation;
     // var route = this.props.route;
-    var genelet = new Genelet({handler:"https://www.tabilet.com/jenny/app.php"});
+    var genelet = new Genelet({handler:"https://www.tabilet.com/jenny/app.php", referer:"/"});
     if (years.length == 0) genelet.go(navigation, "p", "car", "years", {}, this.fyear);
     if (makes.length == 0) genelet.go(navigation, "p", "car", "makes", {}, this.fmake);
 

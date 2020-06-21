@@ -14,6 +14,7 @@ class Genelet {
 		this.token = args.token || "";
 		this.OTHER = args.OTHER || {};
 		this.lastQ = args.lastQ || {};
+		this.referer = args.referer || ""; // for tracking
 	}
 
 	ajaxPage(f, role, comp, query, method, landing) {
@@ -21,7 +22,7 @@ class Genelet {
 		if (method === undefined) method = "GET";
 
 		var url = handler + "/" + role + "/" + this.json + "/" + comp;
-		var req = { method: method, headers: { "Content-Type": "application/json", "User-Agent": getUniqueId(), "Referer": getDeviceId() } };
+		var req = { method: method, headers: { "Content-Type": "application/json", "X-Unique-ID": getUniqueId(), "User-Agent": getDeviceId(), "Referer": this.referer } };
 		if (comp != this.logins && this.token != "") {
 			req.method = "POST";
 			//req.headers["Authorization"] = "Bearer " + this.token;
@@ -34,6 +35,7 @@ class Genelet {
 		} else {
 			req.body = JSON.stringify(query);
 		}
+		this.referer = url;
 		// console.log(url + ": ", JSON.stringify(req));
 
 		fetch(url, req).then(

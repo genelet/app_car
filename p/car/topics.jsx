@@ -161,7 +161,7 @@ class Version extends React.Component {
       </View>
       <View style={{"flex":0.05}} />
       <View style={{"alignItems": "center"}}>
-        <Text h5>1.0.1</Text>
+        <Text h5>1.1.0</Text>
       </View>
       <View style={{"marginTop":100, "marginBottom":10}}>
         <Text style={{"textAlign": "center", "fontSize":18, "fontWeight": "bold", "color":"maroon"}}>Data License</Text>
