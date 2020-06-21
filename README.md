@@ -42,5 +42,10 @@ release {
   signingConfig signingConfigs.release
 }
 
+
+vi app/build.gradle
+change version code xyz
+change version name x.y.z
+
 before making the aab file, follow https://reactnative.dev/docs/removing-default-permissions
 to remove few permissions.
