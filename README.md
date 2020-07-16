@@ -4,7 +4,9 @@ for git:
 
 npx react-native init Recalls
 
-git checkout git@github.com:genelet/app_car.git Recalls
+git clone git@github.com:genelet/app_car.git
+
+mv app_car/* Recalls
 
 note that in metro.config.json, it adds:
 ```
